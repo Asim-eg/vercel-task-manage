@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Manager</title>
+  <link rel="stylesheet" href="/public/styles.css">
+</head>
+
+<body>
+    <section class="taskManager">
+        <header class="card">
+          <h1>Task Manager ✅</h1>
+          <form id="taskForm">
+            <input type="text" id="authorName" placeholder="Your Name...">
+            <input type="text" id="taskName" placeholder="Add a task...">
+          </form>
+          <form id="description">
+            <input type="text" id="taskDescription" placeholder="Add task description...">
+          </form>
+          <button id="submit" type="submit">Add Task</button>
+        </header>
+      
+        <section id="taskContainer"></section>
+    </section>
+    <div class="confirm">
+        <h1>Confirm your action</h1>
+        <p>Are you <strong>really</strong> sure that you want to delete this task?</p>
+        <button class="cancel">Cancel</button>
+        <button autofocus class="confirmed">Confirm</button>
+    </div>
+    <script src="/public/script.js"></script>
+</body>
+
+</html>
