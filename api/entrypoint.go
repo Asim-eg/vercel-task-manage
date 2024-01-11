@@ -67,12 +67,12 @@ func init() {
 	UpdateTask(r)
 	DeleteTask(r)
 	GetTask(r)
-}
-
-func Handler(w http.ResponseWriter, r *http.Request) {
-	app.ServeHTTP(w, r)
 
 	defer func() {
 		mongoClient.Disconnect(context.Background())
 	}()
+}
+
+func Handler(w http.ResponseWriter, r *http.Request) {
+	app.ServeHTTP(w, r)
 }
