@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
 	"log"
 	"net/http"
@@ -25,9 +26,14 @@ func connectToMongoDB() {
 	mongoClientOnce.Do(func() {
 		var err error
 		mongoCtx := context.Background()
-		clientOptions := options.Client().ApplyURI(os.Getenv("MONGODB_URI")) // Use environment variable
+		serverAPI := options.ServerAPI(options.ServerAPIVersion1)
+		opts := options.Client().ApplyURI(os.Getenv("MONGODB_URI")).SetServerAPIOptions(serverAPI)
+		tlsConfig := &tls.Config{}
+		opts.SetTLSConfig(tlsConfig)
+
+		//clientOptions := options.Client().ApplyURI(os.Getenv("MONGODB_URI")) // Use environment variable
 		fmt.Print("MONGO URL: ", os.Getenv("MONGODB_URI"))
-		mongoClient, err = mongo.Connect(mongoCtx, clientOptions)
+		mongoClient, err = mongo.Connect(mongoCtx, opts)
 		if err != nil {
 			log.Fatalf("Failed to connect to MongoDB: %v", err)
 		}
@@ -68,9 +74,9 @@ func init() {
 	DeleteTask(r)
 	GetTask(r)
 
-	defer func() {
-		mongoClient.Disconnect(context.Background())
-	}()
+	// defer func() {
+	// 	mongoClient.Disconnect(context.Background())
+	// }()
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
