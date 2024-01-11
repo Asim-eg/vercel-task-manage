@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -25,6 +26,7 @@ func connectToMongoDB() {
 		var err error
 		mongoCtx := context.Background()
 		clientOptions := options.Client().ApplyURI(os.Getenv("MONGODB_URI")) // Use environment variable
+		fmt.Print("MONGO URL: ", os.Getenv("MONGODB_URI"))
 		mongoClient, err = mongo.Connect(mongoCtx, clientOptions)
 		if err != nil {
 			log.Fatalf("Failed to connect to MongoDB: %v", err)
@@ -55,6 +57,7 @@ func GetTask(r *gin.RouterGroup) {
 
 func init() {
 
+	connectToMongoDB()
 	gin.SetMode(gin.ReleaseMode)
 	app = gin.New()
 	app.Use(cors.Default())
@@ -67,6 +70,5 @@ func init() {
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-	connectToMongoDB()
 	app.ServeHTTP(w, r)
 }
